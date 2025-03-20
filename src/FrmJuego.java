@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,6 +12,8 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 public class FrmJuego extends JFrame {
+
+    private JLabel lblDado1, lblDado2, lblLanzamientos, lblCenas;
 
     // metodo constructor
     public FrmJuego() {
@@ -23,12 +26,12 @@ public class FrmJuego extends JFrame {
         String nombreArchivo = "/imagenes/5.jpg";
         ImageIcon imgDado = new ImageIcon(getClass().getResource(nombreArchivo));
 
-        JLabel lblDado1 = new JLabel();
+        lblDado1 = new JLabel();
         lblDado1.setIcon(imgDado);
         lblDado1.setBounds(10, 10, imgDado.getIconWidth(), imgDado.getIconHeight());
         getContentPane().add(lblDado1);
 
-        JLabel lblDado2 = new JLabel();
+        lblDado2 = new JLabel();
         lblDado2.setIcon(imgDado);
         lblDado2.setBounds(10 + imgDado.getIconWidth(), 10, imgDado.getIconWidth(), imgDado.getIconHeight());
         getContentPane().add(lblDado2);
@@ -43,7 +46,7 @@ public class FrmJuego extends JFrame {
         lblTituloCenas.setBounds(140 + 2 * imgDado.getIconWidth(), 10, 100, 25);
         getContentPane().add(lblTituloCenas);
 
-        JLabel lblLanzamientos = new JLabel("0");
+        lblLanzamientos = new JLabel("0");
         lblLanzamientos.setHorizontalAlignment(SwingConstants.RIGHT);
         lblLanzamientos.setBackground(new Color(0, 0, 0)); // color de fondo
         lblLanzamientos.setOpaque(true); // hacer opaco para ver el color de fondo
@@ -53,7 +56,7 @@ public class FrmJuego extends JFrame {
         lblLanzamientos.setBounds(30 + 2 * imgDado.getIconWidth(), 40, 100, 100);
         getContentPane().add(lblLanzamientos);
 
-        JLabel lblCenas = new JLabel("0");
+        lblCenas = new JLabel("0");
         lblCenas.setHorizontalAlignment(SwingConstants.RIGHT);
         lblCenas.setBackground(new Color(0, 0, 0)); // color de fondo
         lblCenas.setOpaque(true); // hacer opaco para ver el color de fondo
@@ -70,7 +73,7 @@ public class FrmJuego extends JFrame {
         btnLanzar.setBounds(10, 180, 100, 25);
         getContentPane().add(btnLanzar);
 
-        //Eventos
+        // Eventos
         btnIniciar.addActionListener(new ActionListener() {
 
             @Override
@@ -88,13 +91,38 @@ public class FrmJuego extends JFrame {
             }
 
         });
+
+        // Instanciar los dados
+        dado1 = new Dado();
+        dado2 = new Dado();
     }
 
-    private void iniciarLanzamientos() {
+    private Dado dado1, dado2;
+    private Random r = new Random(); // Instanciar la suerte del juego
 
+    private int cenas, lanzamientos;
+
+    private void iniciarLanzamientos() {
+        cenas = 0;
+        lanzamientos = 0;
+        lblLanzamientos.setText("0");
+        lblCenas.setText("0");
     }
 
     private void lanzarDados() {
+        dado1.lanzar(r);
+        dado1.mostrar(lblDado1);
+
+        dado2.lanzar(r);
+        dado2.mostrar(lblDado2);
+
+        lanzamientos++;
+        lblLanzamientos.setText(String.valueOf(lanzamientos));
+
+        if (dado1.getNumero() + dado2.getNumero() >= 11) {
+            cenas++;
+            lblCenas.setText(String.valueOf(cenas));
+        }
 
     }
 
