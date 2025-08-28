@@ -1,7 +1,11 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -9,20 +13,24 @@ import javax.swing.WindowConstants;
 
 public class FrmJuego extends JFrame {
 
+    private Dado dado1, dado2;
+    private Random r;
+    JLabel lblDado1, lblDado2;
+
     public FrmJuego() {
         setTitle("Juego de dados");
         setSize(600, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
 
-        JLabel lblDado1 = new JLabel();
+        lblDado1 = new JLabel();
         String archivoImagen = "imagenes/2.jpg";
         ImageIcon imgDado = new ImageIcon(getClass().getResource(archivoImagen));
         lblDado1.setIcon(imgDado);
         lblDado1.setBounds(10, 10, imgDado.getIconWidth(), imgDado.getIconHeight());
         getContentPane().add(lblDado1);
 
-        JLabel lblDado2 = new JLabel();
+        lblDado2 = new JLabel();
         lblDado2.setIcon(imgDado);
         lblDado2.setBounds(20 + imgDado.getIconWidth(), 10, imgDado.getIconWidth(), imgDado.getIconHeight());
         getContentPane().add(lblDado2);
@@ -55,7 +63,51 @@ public class FrmJuego extends JFrame {
         lblCenas.setOpaque(true);
         getContentPane().add(lblCenas);
 
+        JButton btnIniciar = new JButton("Iniciar");
+        btnIniciar.setBounds(10, 20 + imgDado.getIconHeight(), 100, 25);
+        getContentPane().add(btnIniciar);
 
+        JButton btnLanzar = new JButton("Lanzar");
+        btnLanzar.setBounds(10, 60 + imgDado.getIconHeight(), 100, 25);
+        getContentPane().add(btnLanzar);
+
+        btnIniciar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                iniciar();
+            }
+
+        });
+
+        btnLanzar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lanzar();
+            }
+
+        });
+
+        // Instanciar los dados y el generador de numeros aleatorios
+        dado1 = new Dado();
+        dado2 = new Dado();
+        r = new Random();
+
+    }
+
+    private void iniciar() {
+
+    }
+
+    private void lanzar() {
+        // lanzar los dados
+        dado1.lanzar(r);
+        dado2.lanzar(r);
+
+        // mostrar los dados
+        dado1.mostrar(lblDado1);
+        dado2.mostrar(lblDado2);
     }
 
 }
